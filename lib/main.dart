@@ -1,3 +1,5 @@
+import 'package:coffee/next_page.dart';
+import 'package:coffee/third_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -5,15 +7,21 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
+        primarySwatch: Colors.deepOrange,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => MyHomePage(
+              title: "unko",
+            ),
+        '/next': (context) => NextPage(),
+        '/third': (context) => ThirdPage(),
+      },
     );
   }
 }
@@ -27,49 +35,68 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int _counter = 1;
 
   void _incrementCounter() {
     setState(() {
-      _counter++;
+      if (this._counter >= 0) {
+        _counter++;
+      }
     });
   }
 
   void _decrementCounter() {
     setState(() {
-      _counter--;
+      if (this._counter > 0) {
+        _counter--;
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("ウンコ"),
-        actions: <Widget>[
-          Icon(Icons.add),
-          Padding(padding:EdgeInsets.all(5.0))
-        ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              'ウンコ $_counter 個',
-              style: Theme.of(context).textTheme.headline3,
-            ),
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text("ウンコ"),
+          actions: <Widget>[
+            Icon(Icons.add),
+            Padding(padding: EdgeInsets.all(5.0))
           ],
         ),
-      ),
-      floatingActionButton: Column(
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "data" + _counter.toString(),
+                style: TextStyle(fontSize: 50.0),
+              ),
+              Container(
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  ElevatedButton(
+                    child: Text("second"),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/next');
+                    },
+                  ),
+                  Padding(padding: EdgeInsets.all(3.0)),
+                  ElevatedButton(
+                    child: Text("third"),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/third');
+                    },
+                  ),
+                ]),
+              )
+            ],
+          ),
+        ),
+        floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            FloatingActionButton (
+            FloatingActionButton(
               backgroundColor: Colors.green,
               onPressed: _incrementCounter,
               tooltip: 'Increment',
@@ -78,14 +105,13 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 5.0),
             ),
-            FloatingActionButton (
+            FloatingActionButton(
               backgroundColor: Colors.orange,
               onPressed: _decrementCounter,
               tooltip: 'Decrement',
               child: Icon(Icons.remove),
             ), //
           ],
-      )
-    );
+        ));
   }
 }
